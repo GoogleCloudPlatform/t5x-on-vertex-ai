@@ -1,0 +1,33 @@
+from __gin__ import dynamic_registration
+
+import __main__ as train_script
+from t5.data import mixtures
+from t5x import models
+from t5x import partitioning
+from t5x import utils
+
+import custom_tasks
+
+include "t5x/t5x/examples/t5/t5_1_1/xl.gin"
+include "t5x/t5x/configs/runs/finetune.gin"
+
+
+TRAIN_TOPOLOGY = 'v2-128'
+
+MIXTURE_OR_TASK_NAME = "xsum"
+TASK_FEATURE_LENGTHS = {"inputs": 512, "targets": 64}
+TRAIN_STEPS = 1_009_000  # 1000000 pre-trained steps + 9000 fine-tuning steps.
+DROPOUT_RATE = 0.1
+INITIAL_CHECKPOINT_PATH = "gs://t5-data/pretrained_models/t5x/t5_1_1_xl/checkpoint_1000000"
+LOSS_NORMALIZING_FACTOR = 233472
+EVAL_PERIOD = 500
+EVALUATOR_NUM_EXAMPLES = 500
+BATCH_SIZE = 256
+
+
+infer_eval/utils.DatasetConfig.task_feature_lengths = {"inputs": 1024, "targets": 64}
+utils.SaveCheckpointConfig.period = 2000
+utils.create_learning_rate_scheduler.base_learning_rate = 0.0005
+partitioning.PjitPartitioner.num_partitions = 8    
+
+
