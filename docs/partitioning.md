@@ -50,7 +50,7 @@ A v3-32 slice includes four TPU boards, each with four TPU chips. TPU chips are
 connected into a 2-D mesh network using a high-speed interconnect. Each TPU chip
 has two TPU cores.  
 
-An abstraction of this physical mesh into a 8x4 logical mesh could have the
+An abstraction of this physical mesh into a 16x2 logical mesh could have the
 mapping of physical cores to a logical mesh that's shown in the following
 diagram.  
 
