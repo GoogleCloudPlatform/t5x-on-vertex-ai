@@ -36,7 +36,7 @@ is 4, as shown in the following diagram.
 
 ![8x4 mesh](/images/8x4mesh.png)
 
-![image](insert_image_url_here)
+
 
 The logical mesh abstracts a physical device mesh, and therefore the layout of
 the logical mesh might be different from that of the physical mesh. For example,
@@ -44,7 +44,7 @@ the following diagram shows the physical topology of a Cloud TPU v3-32 slice.
 
 ![v3-32 slice](/images/v3-32-slice.png)
 
-![image](insert_image_url_here)
+
 
 A v3-32 slice includes four TPU boards, each with four TPU chips. TPU chips are
 connected into a 2-D mesh network using a high-speed interconnect. Each TPU chip
@@ -56,7 +56,6 @@ diagram.
 
 ![16x2 mapping](/images/16x2mapping.png)
 
-![image](insert_image_url_here)
 
 In T5X, you define the mapping of a physical TPU topology to a logical mesh by
 using the `PjitPartitioner` class. As with many T5X functions and classes, you
