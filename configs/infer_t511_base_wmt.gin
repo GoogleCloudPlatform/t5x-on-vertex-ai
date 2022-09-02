@@ -12,4 +12,5 @@ include "t5x/examples/t5/t5_1_1/base.gin"
 
 # Configure the required values by the default eval.gin
 MIXTURE_OR_TASK_NAME = "wmt_t2t_ende_v003"
+DROPOUT_RATE = 0.0
 TASK_FEATURE_LENGTHS = {"inputs": 256, "targets": 256}
