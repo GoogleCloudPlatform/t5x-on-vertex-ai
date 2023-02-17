@@ -144,11 +144,7 @@ def _create_t5x_custom_job(
         gcs_gin_files = []
         for gin_file in gin_files:
             gcs_path = os.path.join(model_dir, gin_file.split(sep='/')[-1])
-            print('********')
-            print(gcs_path)
-            print(gin_file)
             gcs_fs.put(gin_file, gcs_path)
-            print('-------')
             gcs_gin_files.append(gcs_path.replace('gs://', '/gcs/'))
     except:
         raise RuntimeError('Could not copy gin files to GCS.')

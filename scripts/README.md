@@ -30,14 +30,3 @@ python run.py \
 
 
 
-# Tensorboard
-
-
-export TENSORBOARD_NAME=projects/895222332033/locations/us-central1/tensorboards/2937103421045473280
-export REGION=us-central1
-export EXPERIMENT_NAME=ul2-xsum-10
-export LOG_DIR=gs://jk-staging-europe-west4/t5x_jobs/t5x_job_20221112161252
-
-tb-gcp-uploader --tensorboard_resource_name $TENSORBOARD_NAME \
---logdir $LOG_DIR \
---experiment_name $EXPERIMENT_NAME
