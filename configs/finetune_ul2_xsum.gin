@@ -1,0 +1,55 @@
+from __gin__ import dynamic_registration
+
+import __main__ as train_script
+from t5.data import mixtures
+from t5x import models
+from t5x import partitioning
+from t5x import utils
+import seqio
+import custom_tasks
+
+include '/flaxformer/flaxformer/t5x/configs/t5/architectures/t5_flaxformer.gin'
+#include '/flaxformer/flaxformer/t5x/configs/t5/architectures/t5_1_1_flaxformer.gin'
+#include '/examples/ul220b_public.gin'
+include '/t5x/t5x/configs/runs/finetune.gin'
+
+# This is set to caputre the TPU topology the gin file was tested with
+TOPOLOGY = 'v3-128'
+
+# Configure the required values for the default finetune.gin
+MIXTURE_OR_TASK_NAME = "xsum_s_prompt"
+BATCH_SIZE = 128
+TASK_FEATURE_LENGTHS = {"inputs": 1024, "targets": 256}
+DROPOUT_RATE = 0.1
+#LOSS_NORMALIZING_FACTOR = 233472
+#SCALE = 4.0
+TRAIN_STEPS = 2_680_000  # 2_650_000 pre-trained steps + 50000 fine-tuning steps.
+INITIAL_CHECKPOINT_PATH = "gs://scenic-bucket/ul2/ul220b/checkpoint_2650000"
+
+infer_eval/utils.DatasetConfig.task_feature_lengths = {"inputs": 1024, "targets": 256}
+
+# Change the default number of examples for evaluation 
+EVALUATOR_NUM_EXAMPLES = 1000
+
+# Change the default learning rate
+utils.create_learning_rate_scheduler.base_learning_rate = 5e-5
+utils.create_learning_rate_scheduler.warmup_steps = 10000
+utils.create_learning_rate_scheduler.decay_factor = 0.00011
+utils.create_learning_rate_scheduler.steps_per_cycle = 100000
+utils.create_learning_rate_scheduler.factors = 'constant * linear_warmup'
+utils.create_learning_rate_scheduler.step_offset = 2650000 
+
+# Configure data, activation, and parameter partitioning
+partitioning.PjitPartitioner.num_partitions = 8 
+partitioning.standard_logical_axis_rules:
+    activation_partitioning_dims = 2
+    parameter_partitioning_dims = 2
+
+
+# Complete the configuration of the UL2 model
+NUM_EMBEDDINGS = 32128
+VOCABULARY = @seqio.SentencePieceVocabulary()
+seqio.SentencePieceVocabulary.sentencepiece_model_file = "gs://t5-data/vocabs/cc_all.32000.100extra/sentencepiece.model"
+
+# This is to avoid deprection warnings from Flaxformer
+ACTIVATION_PARTITIONING_DIMS = None

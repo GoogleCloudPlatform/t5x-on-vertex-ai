@@ -1,0 +1,60 @@
+# Gin config for public UL2 20B model.
+# This is for the external cloud version of T5X.
+# ginlint: disable
+from __gin__ import dynamic_registration
+from flax import linen
+from flaxformer.architectures.t5 import t5_architecture
+from flaxformer.components.attention import dense_attention
+from flaxformer.components import dense
+from flaxformer.components import embedding
+from flaxformer.components import layer_norm
+from flaxformer.components import relative_position_biases
+from flaxformer.components import convolution
+from t5x import adafactor
+from t5x import models
+from t5x import utils
+
+# Optimizer
+# `learning_rate` is set by `Trainer.learning_rate_fn` in runs/pretrain.gin,
+# which defaults to 1.0
+OPTIMIZER = @adafactor.Adafactor()
+adafactor.Adafactor:
+  step_offset = 0
+  multiply_by_parameter_scale = @adafactor.HParamMap()
+# Do not multiply by the scale for relpos_bias but do multiply for others.
+adafactor.HParamMap.rules = [('relpos_bias', False), ('.*', True)]
+
+SCALE = 1.0
+
+HEAD_DIM = 256
+
+NUM_ENCODER_LAYERS = 32
+NUM_DECODER_LAYERS = 32
+EMBED_DIM = 4096
+MLP_DIM = 16384
+NUM_HEADS = 16
+
+layer_norm.T5LayerNorm.dtype = %ACTIVATION_DTYPE
+
+# Loss HParam defaults
+Z_LOSS = 0.0001
+LABEL_SMOOTHING = 0.0
+# NOTE: When fine-tuning the public T5 checkpoints (trained in T5 MeshTF)
+# the loss normalizing factor should be set to 2048 * 114 (pretraining
+# batch_size * target_token_length).
+LOSS_NORMALIZING_FACTOR = None
+
+MODEL = @models.EncoderDecoderModel()
+models.EncoderDecoderModel:
+  module = %ARCHITECTURE  # provided by t5_flaxformer
+  input_vocabulary = %VOCABULARY
+  output_vocabulary = %VOCABULARY
+  optimizer_def = %OPTIMIZER
+  z_loss = %Z_LOSS
+  label_smoothing = %LABEL_SMOOTHING
+  loss_normalizing_factor = %LOSS_NORMALIZING_FACTOR
+
+dense.MlpBlock.activations = ('swish', 'linear')
+
+t5_architecture.Decoder.layer_norm_factory = @final_layer_norm/layer_norm.T5LayerNorm
+final_layer_norm/layer_norm.T5LayerNorm.use_scale = False
