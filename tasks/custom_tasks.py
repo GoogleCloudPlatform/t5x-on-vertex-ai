@@ -15,6 +15,7 @@
 """This module maintains custom task definitions and registrations."""
 
 import functools
+import logging
 import seqio
 import t5.data
 from t5.data import postprocessors

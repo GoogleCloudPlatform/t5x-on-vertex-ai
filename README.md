@@ -56,6 +56,8 @@ velocity of experimentation, deploy faster, and manage models with confidence.
      - [Evaluating T5 1.1 XL on XSum](https://github.com/GoogleCloudPlatform/t5x-on-vertex-ai/blob/main/notebooks/eval-t511-xl-xsum.ipynb)
 
 -  [`/configs`](https://github.com/GoogleCloudPlatform/t5x-on-vertex-ai/tree/main/configs): Configuration files for the scenarios demonstrated in notebooks.
+-  [`/scripts`](https://github.com/GoogleCloudPlatform/t5x-on-vertex-ai/tree/main/scripts): Vertex AI Training T5X job configuration templates for selected fine-tuning, evaluating or inferring scenarios
+     - [Fine-tuning 20B UL2 on XSUM](https://github.com/GoogleCloudPlatform/t5x-on-vertex-ai/blob/main/scripts/README.md#fine-tuning-20b-ul2-on-xsum)
 
 - [`/tasks`](https://github.com/GoogleCloudPlatform/t5x-on-vertex-ai/tree/main/tasks): Python modules implementing custom SeqIO Tasks.  
 - [`/docs`](https://github.com/GoogleCloudPlatform/t5x-on-vertex-ai/tree/main/docs) - Technical guides compiling best practices for running T5X on Vertex AI:
