@@ -10,7 +10,6 @@ import custom_tasks
 
 include '/flaxformer/flaxformer/t5x/configs/t5/architectures/t5_flaxformer.gin'
 #include '/flaxformer/flaxformer/t5x/configs/t5/architectures/t5_1_1_flaxformer.gin'
-#include '/examples/ul220b_public.gin'
 include '/t5x/t5x/configs/runs/finetune.gin'
 
 # This is set to caputre the TPU topology the gin file was tested with
