@@ -38,6 +38,16 @@ from google.cloud.aiplatform import Execution
 from google.cloud.aiplatform import Model
 from google.cloud.aiplatform import CustomJob
 
+import google.auth
+from google.auth import credentials as auth_credentials
+from google.api_core.client_info import ClientInfo
+
+source_credentials, _ = google.auth.default()
+request = google.auth.transport.requests.Request()
+source_credentials.refresh(request)
+source_credentials.apply(headers = {'user-agent': 'cloud-solutions/t5x-on-vertex-ai-v1.0'})
+source_credentials.refresh(request)
+
 # set python path from the current environment
 PYTHON_BIN = os.path.join(sys.exec_prefix, 'bin', 'python3')
 pd.set_option('display.max_colwidth', None)
