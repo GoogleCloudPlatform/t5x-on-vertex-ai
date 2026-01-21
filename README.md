@@ -191,7 +191,7 @@ The notebooks in the repo require access to a Cloud Storage bucket that's used f
 ```bash
 REGION=<YOUR_REGION>
 BUCKET_NAME=<YOUR_BUCKET_NAME>
-gsutil mb -l $REGION -p $PROJECT_ID gs://$BUCKET_NAME
+gcloud storage buckets create gs://$BUCKET_NAME --project=$PROJECT_ID --location=$REGION
 ```
 
 ### Create a Vertex AI Tensorboard instance
@@ -243,7 +243,7 @@ tar -czvf xsum-extracts-from-downloads.tar.gz xsum-extracts-from-downloads/
 ```
 3. Copy the archive to the TFDS manual downloads folder.
 ```
-gsutil cp -r xsum-extracts-from-downloads.tar.gz ${TFDS_DATA_DIR}/downloads/manual/
+gcloud storage cp --recursive xsum-extracts-from-downloads.tar.gz ${TFDS_DATA_DIR}/downloads/manual/
 ```
 4. Build the dataset
 ```
@@ -259,4 +259,3 @@ Start by reading the [Running and monitoring T5X jobs with Vertex AI](https://gi
 ## Getting help
 
 If you have any questions or if you found any problems with this repository, please report through GitHub issues.
-
