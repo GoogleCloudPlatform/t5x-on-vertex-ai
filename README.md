@@ -191,7 +191,7 @@ The notebooks in the repo require access to a Cloud Storage bucket that's used f
 ```bash
 REGION=<YOUR_REGION>
 BUCKET_NAME=<YOUR_BUCKET_NAME>
-gcloud storage buckets create gs://$BUCKET_NAME --project=$PROJECT_ID --location=$REGION
+gcloud storage buckets create gs://$BUCKET_NAME --location=$REGION --project=$PROJECT_ID
 ```
 
 ### Create a Vertex AI Tensorboard instance
